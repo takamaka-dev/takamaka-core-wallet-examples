@@ -1,0 +1,1 @@
+# takamaka-core-wallet-examples
