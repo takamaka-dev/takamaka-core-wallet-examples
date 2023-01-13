@@ -1,8 +1,8 @@
 package io.takamaka.takamaka.core.wallet.examples;
 
-import io.takamaka.takamaka.core.wallet.beans.WalletBean;
-import io.takamaka.takamaka.core.wallet.beans.support.GlobalConstants;
-import io.takamaka.takamaka.core.wallet.beans.support.ProjectHelper;
+import io.takamaka.takamaka.core.wallet.examples.beans.WalletBean;
+import io.takamaka.takamaka.core.wallet.examples.support.GlobalConstants;
+import io.takamaka.takamaka.core.wallet.examples.support.ProjectHelper;
 import io.takamaka.wallet.InstanceWalletKeyStoreBCED25519;
 import io.takamaka.wallet.InstanceWalletKeyStoreBCQTESLAPSSC1Round2;
 import io.takamaka.wallet.InstanceWalletKeystoreInterface;

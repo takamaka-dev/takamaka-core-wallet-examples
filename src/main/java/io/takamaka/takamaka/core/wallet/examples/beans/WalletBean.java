@@ -1,5 +1,5 @@
 
-package io.takamaka.takamaka.core.wallet.beans;
+package io.takamaka.takamaka.core.wallet.examples.beans;
 
 import java.io.Serializable;
 

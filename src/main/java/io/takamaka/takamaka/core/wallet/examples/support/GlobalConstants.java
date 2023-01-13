@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io.takamaka.takamaka.core.wallet.beans.support;
+package io.takamaka.takamaka.core.wallet.examples.support;
 
 /**
  *
