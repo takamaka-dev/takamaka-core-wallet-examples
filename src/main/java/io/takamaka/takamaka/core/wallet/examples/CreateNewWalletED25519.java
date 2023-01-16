@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author giovanni
  */
 @Slf4j
-public class CreateNewWalletBCED25519 {
+public class CreateNewWalletED25519 {
 
     public static void main(String[] args) throws Exception {
         //generic interface for all takamaka wallet
