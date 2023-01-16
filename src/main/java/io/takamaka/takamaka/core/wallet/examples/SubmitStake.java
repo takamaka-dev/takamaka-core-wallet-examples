@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author Giovanni Antino giovanni.antino@takamaka.io
  */
 @Slf4j
-public class SubmitPay {
+public class SubmitStake {
 
     public static final String SOURCE_WALLET_NAME = "my_example_wallet_source";
     public static final String DESTINATION_WALLET_NAME = "my_example_wallet_destination";
@@ -35,39 +35,61 @@ public class SubmitPay {
 
     public static void main(String[] args) throws Exception {
 
-        log.info(" --- same code TransactionPayED25519 --- Begin ---");
+        log.info("Side note: A blockchain stake refers to the amount of\n"
+                + "cryptocurrency a person holds and is willing to pledge as\n"
+                + "collateral in order to participate in the consensus process\n"
+                + "of a specific blockchain network. The term is most commonly\n"
+                + "used in the context of proof-of-stake (PoS) blockchain\n"
+                + "systems, where individuals can \"stake\" their coins to\n"
+                + "validate transactions and secure the network, rather than\n"
+                + "using computer power to solve complex mathematical puzzles\n"
+                + "(as in proof-of-work systems). The more coins a person\n"
+                + "stakes, the greater their chances of being selected to\n"
+                + "validate a block of transactions and earn a reward.");
+
+        log.info(" --- same code TransactionStakeED25519 --- Begin ---");
 
         log.info("wallet creation or import");
-        final InstanceWalletKeystoreInterface iwkEDSource = new InstanceWalletKeyStoreBCED25519(SOURCE_WALLET_NAME, SOURCE_WALLET_PASSWORD);
-        final InstanceWalletKeystoreInterface iwkEDDestination = new InstanceWalletKeyStoreBCED25519(DESTINATION_WALLET_NAME, DESTINATION_WALLET_PASSWORD);
+        final InstanceWalletKeystoreInterface iwkEDSource
+                = new InstanceWalletKeyStoreBCED25519(
+                        SOURCE_WALLET_NAME,
+                        SOURCE_WALLET_PASSWORD
+                );
+        final InstanceWalletKeystoreInterface iwkEDDestination = 
+                new InstanceWalletKeyStoreBCED25519(
+                        DESTINATION_WALLET_NAME, 
+                        DESTINATION_WALLET_PASSWORD
+                );
 
+        
+        
         final String publicKeySource = iwkEDSource.getPublicKeyAtIndexURL64(0);
         log.info("source public key " + publicKeySource);
+        
         final String publicKeyDestination = iwkEDDestination.getPublicKeyAtIndexURL64(0);
         log.info("destination public key " + publicKeyDestination);
-
+        
         final Date transactionInclusionTime = TkmTK.getTransactionTime();
 
         log.info("In the takamaka blockchain, values are represented in "
                 + "nanoTK, which means that to transfer 1 TK (a red token or a "
                 + "green token) you need to multiply this value by 10^9.");
-
-        final BigInteger oneTKGValue = TkmTK.unitTK(1);
-
-        log.info("1 TKG value in nano TKG " + oneTKGValue.toString());
-
-        final BigInteger fiveTKRValue = TkmTK.unitTK(5);
-
-        log.info("5 TKR value in nano TKR " + fiveTKRValue.toString());
+        
+        log.info("The minimum stake accepted from takamaka blockchain is "
+                + "200 TKG");
+        
+        final BigInteger twoHundredTKGValue = TkmTK.unitTK(200);
+        log.info("200 TKG value in nano TKG " + twoHundredTKGValue.toString());
 
         log.info("BuilderITB is a class that allows you to create the stub "
                 + "for sending any transaction.");
-                
-        InternalTransactionBean payITB = BuilderITB.pay(
-                publicKeySource, publicKeyDestination,
-                oneTKGValue, fiveTKRValue,
-                "UTF8 message, free annotation",
-                transactionInclusionTime);
+        InternalTransactionBean stakeITB = BuilderITB.stake(
+                publicKeySource,
+                publicKeyDestination,
+                twoHundredTKGValue,
+                "test stake",
+                transactionInclusionTime
+        );
 
         log.info("This forms the body of the transaction, now you need to "
                 + "use a wallet to create the cryptographic envelope and sign "
@@ -77,37 +99,40 @@ public class SubmitPay {
                 + "public key used in the from field matches the key used to "
                 + "sign the tranasation.");
 
-        TransactionBean myPayObject
+        TransactionBean myStakeObject
                 = TkmWallet.createGenericTransaction(
-                        payITB,
+                        stakeITB,
                         iwkEDSource, // source wallet 
                         0 // same wallet and KEY INDEX of publicKeySource
                 );
 
         log.info("transaction serialization");
 
-        String payTransactionJson = TkmTextUtils.toJson(myPayObject);
+        String stakeTransactionJson = TkmTextUtils.toJson(myStakeObject);
 
         log.info("the serialized transaction");
-        log.info(payTransactionJson);
+        log.info(stakeTransactionJson);
 
         log.info("How to perform a syntactic check of the newly created "
                 + "transaction.");
 
-        TransactionBox payTbox = TkmWallet.verifyTransactionIntegrity(payTransactionJson);
-        log.info("the transaction is valid?: " + payTbox.isValid());
+        TransactionBox stakeTbox = TkmWallet.verifyTransactionIntegrity(
+                stakeTransactionJson);
+        log.info("the transaction is valid?: " + stakeTbox.isValid());
 
-        FeeBean payFeeBean = TransactionFeeCalculator.getFeeBean(payTbox);
+        FeeBean stakeFeeBean = TransactionFeeCalculator.getFeeBean(
+                stakeTbox);
 
-        log.info("PAY is a basic transaction");
-        log.info("single inclusion transaction hash: " + payFeeBean.getSith()
-                + "\nCPU cost (nanoTK):\t" + payFeeBean.getCpu()
-                + "\nMEMORY cost (nanoTK):\t" + payFeeBean.getMemory()
-                + "\nDISK cost (nanoTK):\t" + payFeeBean.getDisk()
+        log.info("STAKE is a basic transaction");
+        log.info("single inclusion transaction hash: " + stakeFeeBean.getSith()
+                + "\nCPU cost (nanoTK):\t" + stakeFeeBean.getCpu()
+                + "\nMEMORY cost (nanoTK):\t" + stakeFeeBean.getMemory()
+                + "\nDISK cost (nanoTK):\t" + stakeFeeBean.getDisk()
         );
-        log.info("readable way in TK: " + TransactionFeeCalculator.getCostInTK(payFeeBean).toPlainString());
+        log.info("readable way in TK: " + TransactionFeeCalculator.getCostInTK(
+                stakeFeeBean).toPlainString());
 
-        log.info(" --- same code TransactionPayED25519 --- End ---");
+        log.info(" --- same code TransactionStakeED25519 --- End ---");
 
         log.info("To minimize the risk of transaction modification during "
                 + "transport, Takamaka endpoints accept transactions only if "
@@ -136,10 +161,11 @@ public class SubmitPay {
                 + "with mobile devices that poorly digest plain http outside the"
                 + " development environment.");
 
-        String payHexBody = TkmSignUtils.fromStringToHexString(payTransactionJson);
+        String stakeHexBody = TkmSignUtils.fromStringToHexString(
+                stakeTransactionJson);
 
         log.info("the wrapped json, can be decode using hex to text tool");
-        log.info(payHexBody);
+        log.info(stakeHexBody);
 
         log.info("You can send a transaction to a verification endpoint to "
                 + "get a syntactic check on it.");
@@ -147,8 +173,9 @@ public class SubmitPay {
                 + "devices with reduced computing capacity or prefers to do an "
                 + "offload of this work.");
         log.info("curlified version of the transaction test submit");
-        log.info("curl --location --request GET 'https://dev.takamaka.io/api/V2/fastapi/verifytransaction' \\\n"
-                + "--header 'Content-Type: application/x-www-form-urlencoded' \\\n"
+        log.info("curl --location --request GET 'https://dev.takamaka.io/"
+                + "api/V2/fastapi/verifytransaction' \\\n"
+                + "--header 'Content-Type: application/x-www-form-urlencoded'\n"
                 + "--data-urlencode 'tx=7b227...227d'");
         log.info("endpoint valid response example");
         log.info("{\n"
@@ -160,13 +187,16 @@ public class SubmitPay {
                 + "    \"cpu\": 0\n"
                 + "}");
 
-        String payTxVerifyResult = ProjectHelper.doPost(
-                "https://dev.takamaka.io/api/V2/fastapi/verifytransaction", // main network verify endpoint (for verify main or test network is the same) 
+        String stakeTxVerifyResult = ProjectHelper.doPost(
+                 /* main network verify endpoint (for verify main or 
+                test network is the same)*/ 
+                "https://dev.takamaka.io/api/V2/fastapi/verifytransaction",
                 "tx", //form var
-                payHexBody); //hex transaction
+                stakeHexBody
+        ); //hex transaction
 
         log.info("endpoint verification result");
-        log.info(payTxVerifyResult);
+        log.info(stakeTxVerifyResult);
 
         log.info("curlified version of the transaction submit");
         log.info("curl --location --request GET 'https://dev.takamaka.io/api/V2/testapi/transaction' \\\n"
@@ -180,14 +210,15 @@ public class SubmitPay {
                 + "successfully received by the server, the syntax is correct, "
                 + "and it has been added to the queue for inclusion in a block.\n"
                 + "At this point the SEMANTIC checks have not yet been "
-                + "performed, for example if the sending account cannot pay for "
+                + "performed, for example if the sending account cannot stake for "
                 + "the inclusion the transaction will be discarded.");
         log.info("transaction submit to test endpoint");
-        String payTxSubmitResult = ProjectHelper.doPost("https://dev.takamaka.io/api/V2/testapi/transaction", // TEST endpoint
-                "tx", 
-                payHexBody);
+        String stakeTxSubmitResult = ProjectHelper.doPost(
+                "https://dev.takamaka.io/api/V2/testapi/transaction", // TEST endpoint
+                "tx",
+                stakeHexBody);
         log.info("endpoint submit result");
-        log.info(payTxSubmitResult);
-        
+        log.info(stakeTxSubmitResult);
+
     }
 }
