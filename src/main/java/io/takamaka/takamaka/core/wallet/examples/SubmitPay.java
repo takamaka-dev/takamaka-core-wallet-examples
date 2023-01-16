@@ -183,7 +183,7 @@ public class SubmitPay {
                 + "performed, for example if the sending account cannot pay for "
                 + "the inclusion the transaction will be discarded.");
         log.info("transaction submit to test endpoint");
-        String payTxSubmitResult = ProjectHelper.doPost("https://dev.takamaka.io/api/V2/testapi/transaction",
+        String payTxSubmitResult = ProjectHelper.doPost("https://dev.takamaka.io/api/V2/testapi/transaction", // TEST endpoint
                 "tx", 
                 payHexBody);
         log.info("endpoint submit result");
