@@ -62,7 +62,7 @@ public class SubmitPay {
 
         log.info("BuilderITB is a class that allows you to create the stub "
                 + "for sending any transaction.");
-
+                
         InternalTransactionBean payITB = BuilderITB.pay(
                 publicKeySource, publicKeyDestination,
                 oneTKGValue, fiveTKRValue,
