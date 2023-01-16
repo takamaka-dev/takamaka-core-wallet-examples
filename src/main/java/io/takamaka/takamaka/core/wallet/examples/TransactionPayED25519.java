@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author giovanni
  */
 @Slf4j
-public class TransactionPayCED25519 {
+public class TransactionPayED25519 {
 
     public static final String SOURCE_WALLET_NAME = "my_example_wallet_source";
     public static final String DESTINATION_WALLET_NAME = "my_example_wallet_destination";
