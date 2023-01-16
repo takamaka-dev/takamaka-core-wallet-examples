@@ -25,14 +25,14 @@ import lombok.extern.slf4j.Slf4j;
  * @author Giovanni Antino giovanni.antino@takamaka.io
  */
 @Slf4j
-public class SubmitDeRegisterMain {
+public class SubmitDeRegisterOverflow {
 
     public static final String SOURCE_WALLET_NAME = "my_example_wallet_source";
     public static final String SOURCE_WALLET_PASSWORD = "my_example_wallet_source_password";
 
     public static void main(String[] args) throws Exception {
 
-        log.info("A blockchain de register main ...");
+        log.info("A blockchain de register overflow ...");
 
         log.info("Register main transactions (both in mainnet and test network) "
                 + "can be compiled also with ED25519 but they will never be "
@@ -43,7 +43,7 @@ public class SubmitDeRegisterMain {
         log.info("In the following example, ED2559 will be used for "
                 + "teaching purposes.");
 
-        log.info(" --- same code TransactionDeRegisterMainED25519 --- Begin ---");
+        log.info(" --- same code TransactionDeRegisterOverflowED25519 --- Begin ---");
 
         log.info("wallet creation or import");
         final InstanceWalletKeystoreInterface iwkEDSource
@@ -59,7 +59,7 @@ public class SubmitDeRegisterMain {
 
         log.info("BuilderITB is a class that allows you to create the stub "
                 + "for sending any transaction.");
-        InternalTransactionBean deRegisterMainITB = BuilderITB.deregisterMain(
+        InternalTransactionBean deRegisterOverflowITB = BuilderITB.deregisterOverflow(
                 publicKeySource,
                 "test register main",
                 transactionInclusionTime
@@ -73,40 +73,40 @@ public class SubmitDeRegisterMain {
                 + "public key used in the from field matches the key used to "
                 + "sign the tranasation.");
 
-        TransactionBean myDeRegisterMainObject
-                = TkmWallet.createGenericTransaction(deRegisterMainITB,
+        TransactionBean myDeRegisterOverflowObject
+                = TkmWallet.createGenericTransaction(deRegisterOverflowITB,
                         iwkEDSource, // source wallet 
                         0 // same wallet and KEY INDEX of publicKeySource
                 );
 
         log.info("transaction serialization");
 
-        String DeRegisterMainTransactionJson = TkmTextUtils.toJson(
-                myDeRegisterMainObject);
+        String DeRegisterOverflowTransactionJson = TkmTextUtils.toJson(
+                myDeRegisterOverflowObject);
 
         log.info("the serialized transaction");
-        log.info(DeRegisterMainTransactionJson);
+        log.info(DeRegisterOverflowTransactionJson);
 
         log.info("How to perform a syntactic check of the newly created "
                 + "transaction.");
 
-        TransactionBox DeRegisterMainTbox = TkmWallet.verifyTransactionIntegrity(
-                DeRegisterMainTransactionJson);
-        log.info("the transaction is valid?: " + DeRegisterMainTbox.isValid());
+        TransactionBox DeRegisterOverflowTbox = TkmWallet.verifyTransactionIntegrity(
+                DeRegisterOverflowTransactionJson);
+        log.info("the transaction is valid?: " + DeRegisterOverflowTbox.isValid());
 
-        FeeBean DeRegisterMainFeeBean = TransactionFeeCalculator.getFeeBean(
-                DeRegisterMainTbox);
+        FeeBean DeRegisterOverflowFeeBean = TransactionFeeCalculator.getFeeBean(
+                DeRegisterOverflowTbox);
 
         log.info("REGISTER MAIN is a basic transaction");
-        log.info("single inclusion transaction hash: " + DeRegisterMainFeeBean.getSith()
-                + "\nCPU cost (nanoTK):\t" + DeRegisterMainFeeBean.getCpu()
-                + "\nMEMORY cost (nanoTK):\t" + DeRegisterMainFeeBean.getMemory()
-                + "\nDISK cost (nanoTK):\t" + DeRegisterMainFeeBean.getDisk()
+        log.info("single inclusion transaction hash: " + DeRegisterOverflowFeeBean.getSith()
+                + "\nCPU cost (nanoTK):\t" + DeRegisterOverflowFeeBean.getCpu()
+                + "\nMEMORY cost (nanoTK):\t" + DeRegisterOverflowFeeBean.getMemory()
+                + "\nDISK cost (nanoTK):\t" + DeRegisterOverflowFeeBean.getDisk()
         );
         log.info("readable way in TK: " + TransactionFeeCalculator.getCostInTK(
-                DeRegisterMainFeeBean).toPlainString());
+                DeRegisterOverflowFeeBean).toPlainString());
 
-        log.info(" --- same code TransactionDeRegisterMainED25519 --- End ---");
+        log.info(" --- same code TransactionDeRegisterOverflowED25519 --- End ---");
 
         log.info("To minimize the risk of transaction modification during "
                 + "transport, Takamaka endpoints accept transactions only if "
@@ -135,11 +135,11 @@ public class SubmitDeRegisterMain {
                 + "with mobile devices that poorly digest plain http outside the"
                 + " development environment.");
 
-        String DeRegisterMainHexBody = TkmSignUtils.fromStringToHexString(
-                DeRegisterMainTransactionJson);
+        String DeRegisterOverflowHexBody = TkmSignUtils.fromStringToHexString(
+                DeRegisterOverflowTransactionJson);
 
         log.info("the wrapped json, can be decode using hex to text tool");
-        log.info(DeRegisterMainHexBody);
+        log.info(DeRegisterOverflowHexBody);
 
         log.info("You can send a transaction to a verification endpoint to "
                 + "get a syntactic check on it.");
@@ -161,16 +161,16 @@ public class SubmitDeRegisterMain {
                 + "    \"cpu\": 0\n"
                 + "}");
 
-        String DeRegisterMainTxVerifyResult = ProjectHelper.doPost(
+        String DeRegisterOverflowTxVerifyResult = ProjectHelper.doPost(
                 /* main network verify endpoint (for verify main or 
                 test network is the same)*/
                 "https://dev.takamaka.io/api/V2/fastapi/verifytransaction",
                 "tx", //form var
-                DeRegisterMainHexBody
+                DeRegisterOverflowHexBody
         ); //hex transaction
 
         log.info("endpoint verification result");
-        log.info(DeRegisterMainTxVerifyResult);
+        log.info(DeRegisterOverflowTxVerifyResult);
 
         log.info("curlified version of the transaction submit");
         log.info("curl --location --request GET 'https://dev.takamaka.io/api/V2/testapi/transaction' \\\n"
@@ -187,12 +187,12 @@ public class SubmitDeRegisterMain {
                 + "performed, for example if the sending account cannot register"
                 + "main for the inclusion the transaction will be discarded.");
         log.info("transaction submit to test endpoint");
-        String DeRegisterMainTxSubmitResult = ProjectHelper.doPost(
+        String DeRegisterOverflowTxSubmitResult = ProjectHelper.doPost(
                 "https://dev.takamaka.io/api/V2/testapi/transaction", // TEST endpoint
                 "tx",
-                DeRegisterMainHexBody);
+                DeRegisterOverflowHexBody);
         log.info("endpoint submit result");
-        log.info(DeRegisterMainTxSubmitResult);
+        log.info(DeRegisterOverflowTxSubmitResult);
 
     }
 }
