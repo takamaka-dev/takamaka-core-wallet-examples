@@ -68,8 +68,8 @@ public class CreateNewWallet {
                 + "This string can be used to reconstruct private keys. "
                 + "This string does not allow recovery of the 25 words.");
         log.info(walletKeyBean.getSeed());
-        log.info("The password is used to generate the AES256 seed with "
-                + "which to encrypt the wallet. When you want to change the "
+        log.info("The password is used to generate the AES256 seed with which to"
+                + " encrypt the wallet. When you want to change the "
                 + "password to the wallet, you do so by extracting the KeyBean,"
                 + " which effectively removes the old AES encryption, and "
                 + "proceeding to a new encryption with the "
