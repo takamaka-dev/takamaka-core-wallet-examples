@@ -10,7 +10,6 @@ import io.takamaka.wallet.beans.FeeBean;
 import io.takamaka.wallet.beans.InternalTransactionBean;
 import io.takamaka.wallet.beans.TransactionBean;
 import io.takamaka.wallet.beans.TransactionBox;
-import io.takamaka.wallet.exceptions.UnlockWalletException;
 import io.takamaka.wallet.utils.BuilderITB;
 import io.takamaka.wallet.utils.TkmTK;
 import io.takamaka.wallet.utils.TkmTextUtils;
@@ -25,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author giovanni
  */
 @Slf4j
-public class TransactionPay {
+public class TransactionPayCED25519 {
 
     public static final String SOURCE_WALLET_NAME = "my_example_wallet_source";
     public static final String DESTINATION_WALLET_NAME = "my_example_wallet_destination";
