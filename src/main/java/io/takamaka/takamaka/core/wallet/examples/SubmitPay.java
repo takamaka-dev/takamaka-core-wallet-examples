@@ -4,6 +4,7 @@
  */
 package io.takamaka.takamaka.core.wallet.examples;
 
+import io.takamaka.takamaka.core.wallet.examples.support.ProjectHelper;
 import io.takamaka.wallet.InstanceWalletKeyStoreBCED25519;
 import io.takamaka.wallet.InstanceWalletKeystoreInterface;
 import io.takamaka.wallet.beans.FeeBean;
@@ -139,7 +140,54 @@ public class SubmitPay {
 
         log.info("the wrapped json, can be decode using hex to text tool");
         log.info(payHexBody);
-        
+
+        log.info("You can send a transaction to a verification endpoint to "
+                + "get a syntactic check on it.");
+        log.info("This is especially useful when one finds oneself using "
+                + "devices with reduced computing capacity or prefers to do an "
+                + "offload of this work.");
+        log.info("culified version of the transaction test submit");
+        log.info("curl --location --request GET 'https://dev.takamaka.io/api/V2/fastapi/verifytransaction' \\\n"
+                + "--header 'Content-Type: application/x-www-form-urlencoded' \\\n"
+                + "--data-urlencode 'tx=7b227...227d'");
+        log.info("endpoint valid response example");
+        log.info("{\n"
+                + "    \"addr\": \"VQLJRNTBc9a3zc0WOuBk00yCd9enELwp_unEiBC27Bk.\",\n"
+                + "    \"hexAddr\": \"5502c944d4c173d6b7cdcd163ae064d34c8277d7a710bc29fee9c48810b6ec19\",\n"
+                + "    \"sith\": \"5L1UxVXZw6T8unvhjvjpm8wsRuBypewcK97aQjcxX-0.\",\n"
+                + "    \"disk\": 78400000,\n"
+                + "    \"memory\": 0,\n"
+                + "    \"cpu\": 0\n"
+                + "}");
+
+        String payTxVerifyResult = ProjectHelper.doPost(
+                "https://dev.takamaka.io/api/V2/fastapi/verifytransaction", // main network verify endpoint (for verify main or test network is the same) 
+                "tx", //form var
+                payHexBody); //hex transaction
+
+        log.info("endpoint verification result");
+        log.info(payTxVerifyResult);
+
+        log.info("curlified version of the transaction submit");
+        log.info("curl --location --request GET 'https://dev.takamaka.io/api/V2/testapi/transaction' \\\n"
+                + "--header 'Content-Type: application/x-www-form-urlencoded' \\\n"
+                + "--data-urlencode 'tx=7b227...3227d'");
+        log.info("response example");
+        log.info("{\n"
+                + "    \"TxIsVerified\": \"true\"\n"
+                + "}");
+        log.info("When the endpoint replies this way, the transaction has been "
+                + "successfully received by the server, the syntax is correct, "
+                + "and it has been added to the queue for inclusion in a block.\n"
+                + "At this point the SEMANTIC checks have not yet been "
+                + "performed, for example if the sending account cannot pay for "
+                + "the inclusion the transaction will be discarded.");
+        log.info("transaction submit to test endpoint");
+        String payTxSubmitResult = ProjectHelper.doPost("https://dev.takamaka.io/api/V2/testapi/transaction",
+                "tx", 
+                payHexBody);
+        log.info("endpoint submit result");
+        log.info(payTxSubmitResult);
         
     }
 }
