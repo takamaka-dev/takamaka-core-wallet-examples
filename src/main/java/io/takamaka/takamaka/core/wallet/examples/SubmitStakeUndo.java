@@ -185,6 +185,11 @@ public class SubmitStakeUndo {
                 + "performed, for example if the sending account cannot pay for "
                 + "the inclusion the transaction will be discarded.");
         log.info("transaction submit to test endpoint");
+        String stakeUndoTxSubmitResult = ProjectHelper.doPost("https://dev.takamaka.io/api/V2/testapi/transaction", // TEST endpoint
+                "tx", 
+                stakeUndoHexBody);
+        log.info("endpoint submit result");
+        log.info(stakeUndoTxSubmitResult);
         String payTxSubmitResult = ProjectHelper.doPost("https://dev.takamaka.io/api/V2/testapi/transaction", // TEST endpoint
                 "tx", 
                 stakeUndoHexBody);
