@@ -7,8 +7,6 @@ package io.takamaka.takamaka.core.wallet.examples;
 import io.takamaka.wallet.InstanceWalletKeyStoreBCED25519;
 import io.takamaka.wallet.InstanceWalletKeystoreInterface;
 import io.takamaka.wallet.beans.KeyBean;
-import io.takamaka.wallet.exceptions.UnlockWalletException;
-import io.takamaka.wallet.exceptions.WalletException;
 import io.takamaka.wallet.utils.DefaultInitParameters;
 import io.takamaka.wallet.utils.FileHelper;
 import io.takamaka.wallet.utils.FixedParameters;
@@ -24,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author giovanni
  */
 @Slf4j
-public class CreateNewWallet {
+public class CreateNewWalletBCED25519 {
 
     public static void main(String[] args) throws Exception {
         //generic interface for all takamaka wallet
@@ -46,7 +44,9 @@ public class CreateNewWallet {
         String publicKeyAtIndexOne = iwkED.getPublicKeyAtIndexURL64(1);
         log.info("Publick key zero " + publicKeyAtIndexZero);
         log.info("Publick key one " + publicKeyAtIndexOne);
-        Path walletPath = Paths.get(FileHelper.getDefaultWalletDirectoryPath().toString(), walletName + DefaultInitParameters.WALLET_EXTENSION);
+        Path walletPath = Paths.get(
+                FileHelper.getDefaultWalletDirectoryPath().toString(), 
+                walletName + DefaultInitParameters.WALLET_EXTENSION);
         KeyBean walletKeyBean = WalletHelper.readKeyFile(walletPath, walletPassword);
         //Within a KeyBean is stored all the information, in plain text, 
         //to be able to reconstruct a wallet.
@@ -88,12 +88,24 @@ public class CreateNewWallet {
                 + "that of a wallet created from scratch. To be able to open it, "
                 + "it is necessary to change the extension from \"userWallet\" "
                 + "to \"wallet.\"");
-        Path reamedRecoveredWallet = Paths.get(importKeyFromWords.getParent().toString(), importKeyFromWords.getFileName().toString().split(".userWallet")[0] + ".wallet");
-        FileHelper.rename(importKeyFromWords.toString(), reamedRecoveredWallet.toString(), Boolean.TRUE);
+        Path reamedRecoveredWallet = Paths.get(
+                importKeyFromWords.getParent().toString(),
+                importKeyFromWords.getFileName().toString().split(".userWallet")[0] + ".wallet");
+        FileHelper.rename(
+                importKeyFromWords.toString(),
+                reamedRecoveredWallet.toString(),
+                Boolean.TRUE);
         log.info("open the restored wallet");
-        InstanceWalletKeystoreInterface restoredIwkED = new InstanceWalletKeyStoreBCED25519(recoveredWalletName, recoveredWalletPassword);
+        InstanceWalletKeystoreInterface restoredIwkED = new InstanceWalletKeyStoreBCED25519(
+                recoveredWalletName, 
+                recoveredWalletPassword);
         log.info("orignal wallet key  " + iwkED.getPublicKeyAtIndexURL64(0));
         log.info("restored wallet key " + restoredIwkED.getPublicKeyAtIndexURL64(0));
+        
+        if(publicKeyAtIndexZero.equals(restoredIwkED.getPublicKeyAtIndexURL64(0))){
+            log.info("the original public key match the restored");
+            log.info("the restoring procedure has been successful");
+        }
 
     }
 }
