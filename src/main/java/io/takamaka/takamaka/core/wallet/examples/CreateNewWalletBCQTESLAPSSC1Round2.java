@@ -4,11 +4,9 @@
  */
 package io.takamaka.takamaka.core.wallet.examples;
 
-import io.takamaka.wallet.InstanceWalletKeyStoreBCED25519;
+import io.takamaka.wallet.InstanceWalletKeyStoreBCQTESLAPSSC1Round2;
 import io.takamaka.wallet.InstanceWalletKeystoreInterface;
 import io.takamaka.wallet.beans.KeyBean;
-import io.takamaka.wallet.exceptions.UnlockWalletException;
-import io.takamaka.wallet.exceptions.WalletException;
 import io.takamaka.wallet.utils.DefaultInitParameters;
 import io.takamaka.wallet.utils.FileHelper;
 import io.takamaka.wallet.utils.FixedParameters;
@@ -24,35 +22,43 @@ import lombok.extern.slf4j.Slf4j;
  * @author giovanni
  */
 @Slf4j
-public class CreateNewWallet {
+public class CreateNewWalletBCQTESLAPSSC1Round2 {
 
     public static void main(String[] args) throws Exception {
-        //generic interface for all takamaka wallet
-        InstanceWalletKeystoreInterface iwkED;
-        //ed wallet creation with recovery based on 25 words from dictionary.
-        String walletName = "my_ed_wallet_example";
-        String recoveredWalletName = "my_recovered_ed_wallet_example";
+        log.info("generic interface for all takamaka wallet");
+        InstanceWalletKeystoreInterface iwkBCQT2;
+        log.info("ed wallet creation with recovery based on 25 words "
+                + "from dictionary.");
+        String walletName = "my_bcqt2_wallet_example";
+        String recoveredWalletName = "my_recovered_bcqt2_wallet_example";
         String walletPassword = "my_super_safe_password";
         String recoveredWalletPassword = "my_super_safe_password_for_recovered_wallet";
-        iwkED = new InstanceWalletKeyStoreBCED25519(walletName, walletPassword);
-        //If a wallet with the same name exists the instance will try to open it 
-        //using the specified password.
-        //From the single seed of iwk, 2^31 key pairs can be obtained.
-        //Key generation is deterministic and seed-based.
-        //To an external observer, a public key pair generated from the same
-        //wallet is indistinguishable from a key pair generated from two 
-        //different wallets.
-        String publicKeyAtIndexZero = iwkED.getPublicKeyAtIndexURL64(0);
-        String publicKeyAtIndexOne = iwkED.getPublicKeyAtIndexURL64(1);
+        iwkBCQT2 = new InstanceWalletKeyStoreBCQTESLAPSSC1Round2(
+                walletName, 
+                walletPassword
+        );
+        log.info("If a wallet with the same name exists the instance will try to"
+                + " open it using the specified password. From the single seed "
+                + "of iwk, 2^31 key pairs can be obtained. Key generation is "
+                + "deterministic and seed-based. To an external observer, a "
+                + "public key pair generated from the same wallet is "
+                + "indistinguishable from a key pair generated from two "
+                + "different wallets.");
+        String publicKeyAtIndexZero = iwkBCQT2.getPublicKeyAtIndexURL64(0);
+        String publicKeyAtIndexOne = iwkBCQT2.getPublicKeyAtIndexURL64(1);
         log.info("Publick key zero " + publicKeyAtIndexZero);
         log.info("Publick key one " + publicKeyAtIndexOne);
-        Path walletPath = Paths.get(FileHelper.getDefaultWalletDirectoryPath().toString(), walletName + DefaultInitParameters.WALLET_EXTENSION);
-        KeyBean walletKeyBean = WalletHelper.readKeyFile(walletPath, walletPassword);
-        //Within a KeyBean is stored all the information, in plain text, 
-        //to be able to reconstruct a wallet.
+        Path walletPath = Paths.get(
+                FileHelper.getDefaultWalletDirectoryPath().toString(),
+                walletName + DefaultInitParameters.WALLET_EXTENSION);
+        KeyBean walletKeyBean = WalletHelper
+                .readKeyFile(walletPath, walletPassword);
+        log.info("Within a KeyBean is stored all the information, in plain text,"
+                + " to be able to reconstruct a wallet.");
         walletKeyBean.getAlgorithm();
 
-        String internalName = recoveredWalletName + FixedParameters.USER_WALLETS_FILE_EXTENSION;
+        String internalName = recoveredWalletName + 
+                FixedParameters.USER_WALLETS_FILE_EXTENSION;
         log.info("the 25 words");
         log.info(walletKeyBean.getWords());
         log.info("Contains reference to the configuration to be used to "
@@ -88,12 +94,29 @@ public class CreateNewWallet {
                 + "that of a wallet created from scratch. To be able to open it, "
                 + "it is necessary to change the extension from \"userWallet\" "
                 + "to \"wallet.\"");
-        Path reamedRecoveredWallet = Paths.get(importKeyFromWords.getParent().toString(), importKeyFromWords.getFileName().toString().split(".userWallet")[0] + ".wallet");
-        FileHelper.rename(importKeyFromWords.toString(), reamedRecoveredWallet.toString(), Boolean.TRUE);
+        Path reamedRecoveredWallet = Paths.get(
+                importKeyFromWords.getParent().toString(), 
+                importKeyFromWords.getFileName().toString()
+                        .split(".userWallet")[0] + ".wallet");
+        FileHelper.rename(
+                importKeyFromWords.toString(), 
+                reamedRecoveredWallet.toString(), 
+                Boolean.TRUE);
         log.info("open the restored wallet");
-        InstanceWalletKeystoreInterface restoredIwkED = new InstanceWalletKeyStoreBCED25519(recoveredWalletName, recoveredWalletPassword);
-        log.info("orignal wallet key  " + iwkED.getPublicKeyAtIndexURL64(0));
-        log.info("restored wallet key " + restoredIwkED.getPublicKeyAtIndexURL64(0));
+        InstanceWalletKeystoreInterface restoredIwkBCQT2 = 
+                new InstanceWalletKeyStoreBCQTESLAPSSC1Round2(
+                recoveredWalletName, 
+                recoveredWalletPassword);
+        log.info("orignal wallet key  " + iwkBCQT2
+                .getPublicKeyAtIndexURL64(0));
+        log.info("restored wallet key " + restoredIwkBCQT2
+                .getPublicKeyAtIndexURL64(0));
+        
+        if(publicKeyAtIndexZero.equals(restoredIwkBCQT2
+                .getPublicKeyAtIndexURL64(0))){
+            log.info("the original public key match the restored");
+            log.info("the restoring procedure has been successful");
+        }
 
     }
 }
