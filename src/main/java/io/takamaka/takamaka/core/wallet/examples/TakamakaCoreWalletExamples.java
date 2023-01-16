@@ -20,7 +20,9 @@ import java.security.NoSuchProviderException;
 import java.util.Date;
 import javax.crypto.NoSuchPaddingException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.log4j.BasicConfigurator;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 
 /**
  *
@@ -30,7 +32,8 @@ import org.apache.log4j.BasicConfigurator;
 public class TakamakaCoreWalletExamples {
 
     public TakamakaCoreWalletExamples() {
-        BasicConfigurator.configure();
+        Configurator.initialize(new DefaultConfiguration());
+        Configurator.setRootLevel(Level.INFO);
     }
 
     public static void main(String[] args) {
