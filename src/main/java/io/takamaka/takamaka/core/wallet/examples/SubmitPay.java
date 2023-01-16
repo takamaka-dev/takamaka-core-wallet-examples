@@ -146,7 +146,7 @@ public class SubmitPay {
         log.info("This is especially useful when one finds oneself using "
                 + "devices with reduced computing capacity or prefers to do an "
                 + "offload of this work.");
-        log.info("culified version of the transaction test submit");
+        log.info("curlified version of the transaction test submit");
         log.info("curl --location --request GET 'https://dev.takamaka.io/api/V2/fastapi/verifytransaction' \\\n"
                 + "--header 'Content-Type: application/x-www-form-urlencoded' \\\n"
                 + "--data-urlencode 'tx=7b227...227d'");
