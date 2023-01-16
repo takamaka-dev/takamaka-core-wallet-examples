@@ -174,7 +174,7 @@ public class Wallet {
         return wallet;
     }
 
-    public static void recoverWallet(List<String> words, String newName, String newPassword, WalletCypher cypher) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException {
+    public static void recoverWallet(List<String> words, String newName, String newPassword, WalletCypher cypher) throws NoSuchAlgorithmException, InvalidKeyException, NoSuchPaddingException, WalletException {
         String internalName = newName + FixedParameters.USER_WALLETS_FILE_EXTENSION;
         WalletHelper.importKeyFromWords(words, FileHelper.getDefaultWalletDirectoryPath(), internalName, cypher, newPassword);
     }
