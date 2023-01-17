@@ -32,7 +32,13 @@ public class SubmitDeRegisterOverflow {
 
     public static void main(String[] args) throws Exception {
 
-        log.info("A blockchain de register overflow is...");
+        log.info("Transaction used to deregister an \"overflow\" address "
+                + "so as to remove it from the pool of nodes assigned to a "
+                + "\"main\" address. Deregistering an \"overflow\" also "
+                + "automatically removes the connection to the \"main\" address"
+                + " it may have been assigned to. The \"overflow\" address must"
+                + " be of type qTesla and present in the \"from\" field, the"
+                + " only mandatory field in this type of transaction. ");
 
         log.info("Deregister overflow transactions (both in mainnet and test network) "
                 + "can be compiled also with ED25519 but they will never be "

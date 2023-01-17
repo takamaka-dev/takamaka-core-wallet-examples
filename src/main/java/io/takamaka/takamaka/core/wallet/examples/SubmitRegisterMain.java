@@ -32,7 +32,13 @@ public class SubmitRegisterMain {
 
     public static void main(String[] args) throws Exception {
 
-        log.info("A blockchain register main is ...");
+        log.info("This transaction is used to register a qTesla address as"
+                + " a \"main\" address and thus enable it to receive stakes and "
+                + "have nodes connected to it. Stakes also made on any “overflow”"
+                + " connected to a “main” are consolidated on it when calculating"
+                + " and dividing slots among nodes. The “main” address must be of"
+                + " type qTesla and present in the \"from\" field, the only mandatory"
+                + " field in this type of transaction.");
 
         log.info("Register main transactions (both in mainnet and test network) "
                 + "can be compiled also with ED25519 but they will never be "

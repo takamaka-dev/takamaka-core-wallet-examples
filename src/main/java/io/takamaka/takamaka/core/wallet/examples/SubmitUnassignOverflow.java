@@ -35,7 +35,13 @@ public class SubmitUnassignOverflow {
 
     public static void main(String[] args) throws Exception {
         
-        log.info("A blockchain unassign overflow is ...");
+        log.info("Transaction used to remove the assignment between a "
+                + "\"main\" and an \"overflow\" address. The addresses remain "
+                + "registered with their respective qualifications "
+                + "and can be reassigned. Unlike the assignment transaction, "
+                + "\"ASSIGN_OVERFLOW,\" which must be done by the \"main\" "
+                + "address, this can be done by either "
+                + "the \"main\" or the \"overflow”.");
         
         log.info("Unassign overflow transactions (both in mainnet and test network) "
                 + "can be compiled also with ED25519 but they will never be "

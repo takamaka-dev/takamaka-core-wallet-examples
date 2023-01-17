@@ -35,7 +35,16 @@ public class SubmitAssignOverflow {
 
     public static void main(String[] args) throws Exception {
         
-        log.info("A blockchain assign overflow is...");
+        log.info("Transaction used to assign an \"overflow\" address to a"
+                + " \"main\". For this transaction to be successful both addresses "
+                + "must already be registered as such via their respective "
+                + "transactions, \"REGISTER_OVERFLOW\" and \"REGISTER_MAIN\". "
+                + "The address of \"main\" must be in the \"from\" field and the "
+                + "address of \"overflow\" in the \"to\" field of the transaction,"
+                + " which are also mandatory. Only the address of \"main\" can "
+                + "assign itself an \"overflow\". A \"main\" address can have "
+                + "multiple \"overflow\" addresses assigned, but an \"overflow\""
+                + " address can be assigned to only one \"main\" address. ");
         
         log.info("Assign overflow transactions (both in mainnet and test network) "
                 + "can be compiled also with ED25519 but they will never be "
