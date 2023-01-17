@@ -117,6 +117,15 @@ public class SubmitBlob {
             Another method could be the following
             String[] tags = "tag1,tag2,tag3".split(",");
          */
+        gen.writeFieldName("tags");
+        gen.writeStartArray();
+        for (String tag : tags) {
+            String trimmedTag = StringUtils.trimToNull(tag);
+            if (!TkmTextUtils.isNullOrBlank(trimmedTag)) {
+                gen.writeObject(trimmedTag);
+            }
+        }
+        gen.writeEndArray();
         mappedMetaData.entrySet().forEach((single) -> {
             if (single.getKey().equals("Content-Type")
                     || single.getKey().equals("X-Parsed-By")
@@ -132,18 +141,10 @@ public class SubmitBlob {
             }
         });
         gen.writeStringField("resourceName", selectedFile.getName());
-        gen.writeObjectField("extraMetadata", mappedExtraMetadata);
         gen.writeStringField("mime", mappedMetaData.get("Content-Type"));
-        gen.writeFieldName("tags");
-        gen.writeStartArray();
-        for (String tag : tags) {
-            String trimmedTag = StringUtils.trimToNull(tag);
-            if (!TkmTextUtils.isNullOrBlank(trimmedTag)) {
-                gen.writeObject(trimmedTag);
-            }
-        }
-        gen.writeEndArray();
+        gen.writeObjectField("extraMetadata", mappedExtraMetadata);
 
+        //to optimize indexing leave data as last element
         byte[] byteFile = FileUtils.readFileToByteArray(selectedFile);
         String base64file = TkmSignUtils.fromByteArrayToB64URL(byteFile);
         gen.writeStringField("data", base64file);
