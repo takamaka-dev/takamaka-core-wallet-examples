@@ -35,7 +35,26 @@ public class SubmitPay {
 
     public static void main(String[] args) throws Exception {
         
-        log.info("A blockchain pay is...");
+        log.info("A blockchain pay refers to the process of making a payment"
+                + " using a blockchain network. A payment on a blockchain network"
+                + " is essentially a digital transaction that transfers ownership "
+                + "of a digital asset such as cryptocurrency. In a blockchain pay,"
+                + " the sender initiates the transaction by providing their"
+                + " digital wallet address and the recipient's address, along"
+                + " with the amount of digital assets to be transferred."
+                + " The transaction is then broadcast to the network, where it is"
+                + " verified and processed by the nodes in the network. "
+                + "Once the transaction is confirmed, the digital assets are"
+                + " transferred to the recipient's digital wallet, and the "
+                + "transaction is recorded on the blockchain register. "
+                + "Blockchain payments are typically faster and cheaper than "
+                + "traditional banking transfers and have the potential to make "
+                + "financial transactions more efficient and accessible. "
+                + "It's worth noting that Blockchain payments are not limited "
+                + "to cryptocurrency, It could be used for other use cases "
+                + "like making micropayments for digital content, for instance,"
+                + " and also in other industries like Supply Chain Management,"
+                + " where it can be used to track and trace the origin of goods.");
         
         log.info(" --- same code TransactionPayED25519 --- Begin ---");
 
