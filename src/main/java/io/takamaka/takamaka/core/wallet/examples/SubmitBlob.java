@@ -34,17 +34,23 @@ public class SubmitBlob {
     public static final String DESTINATION_WALLET_PASSWORD = "my_example_wallet_destination_password";
 
     public static void main(String[] args) throws Exception {
+        
+        log.info("A \"blob\" transaction in a blockchain is a type of "
+                + "transaction that stores binary data, such as a document or "
+                + "image, on the blockchain. This data is typically stored as "
+                + "a \"hash,\" which is a unique digital fingerprint of "
+                + "the data that can be used to verify its authenticity. "
+                + "Blob transactions are often used to store "
+                + "important documents, such as contracts, on a blockchain "
+                + "for secure and tamper-proof storage.");
 
         log.info(" --- same code TransactionPayED25519 --- Begin ---");
 
         log.info("wallet creation or import");
         final InstanceWalletKeystoreInterface iwkEDSource = new InstanceWalletKeyStoreBCED25519(SOURCE_WALLET_NAME, SOURCE_WALLET_PASSWORD);
-        final InstanceWalletKeystoreInterface iwkEDDestination = new InstanceWalletKeyStoreBCED25519(DESTINATION_WALLET_NAME, DESTINATION_WALLET_PASSWORD);
 
         final String publicKeySource = iwkEDSource.getPublicKeyAtIndexURL64(0);
         log.info("source public key " + publicKeySource);
-        final String publicKeyDestination = iwkEDDestination.getPublicKeyAtIndexURL64(0);
-        log.info("destination public key " + publicKeyDestination);
 
         final Date transactionInclusionTime = TkmTK.getTransactionTime();
 
@@ -63,7 +69,7 @@ public class SubmitBlob {
         log.info("BuilderITB is a class that allows you to create the stub "
                 + "for sending any transaction.");
                 
-        InternalTransactionBean payITB = BuilderITB.blob(
+        InternalTransactionBean blobITB = BuilderITB.blob(
                 publicKeySource, 
                 "UTF8 message, free annotation",
                 transactionInclusionTime);
@@ -79,7 +85,7 @@ public class SubmitBlob {
 
         TransactionBean myPayObject
                 = TkmWallet.createGenericTransaction(
-                        payITB,
+                        blobITB,
                         iwkEDSource, // source wallet 
                         0 // same wallet and KEY INDEX of publicKeySource
                 );
