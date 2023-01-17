@@ -32,26 +32,7 @@ public class SubmitRegisterMain {
 
     public static void main(String[] args) throws Exception {
 
-        log.info("A blockchain register main refers to the primary storage "
-                + "area on a blockchain network where all the transactions are "
-                + "recorded. This register is often referred to as the "
-                + "\"blockchain ledger\" or simply the \"ledger.\" It contains"
-                + " a chronological and tamper-proof record of all the "
-                + "transactions that have occurred on the network, including "
-                + "the transfer of digital assets such as cryptocurrency. "
-                + "The blockchain register main is distributed across all the "
-                + "nodes in the network, ensuring that there is no central point"
-                + " of control or failure. Each node has a copy of the register,"
-                + " and new transactions are added to the register through a "
-                + "consensus mechanism such as proof-of-work or proof-of-stake."
-                + " The blockchain register main is the backbone of a blockchain"
-                + " network, and it is responsible for maintaining the integrity"
-                + " and security of the network by ensuring that all transactions"
-                + " are valid and that digital assets are transferred correctly."
-                + " It's worth noting that In some cases, there might be multiple"
-                + " registers on a blockchain network, such as a main register "
-                + "and side-chain registers, each of them have different "
-                + "functions and properties.");
+        log.info("A blockchain register main is ...");
 
         log.info("Register main transactions (both in mainnet and test network) "
                 + "can be compiled also with ED25519 but they will never be "

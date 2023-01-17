@@ -34,7 +34,9 @@ public class SubmitPay {
     public static final String DESTINATION_WALLET_PASSWORD = "my_example_wallet_destination_password";
 
     public static void main(String[] args) throws Exception {
-
+        
+        log.info("A blockchain pay is...");
+        
         log.info(" --- same code TransactionPayED25519 --- Begin ---");
 
         log.info("wallet creation or import");

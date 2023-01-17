@@ -32,9 +32,9 @@ public class SubmitDeRegisterOverflow {
 
     public static void main(String[] args) throws Exception {
 
-        log.info("A blockchain de register overflow ...");
+        log.info("A blockchain de register overflow is...");
 
-        log.info("Register main transactions (both in mainnet and test network) "
+        log.info("Deregister overflow transactions (both in mainnet and test network) "
                 + "can be compiled also with ED25519 but they will never be "
                 + "included. In order to properly include the transaction is"
                 + " mandatory to use BCQTESLAPSSC1Round2 "

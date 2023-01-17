@@ -32,7 +32,7 @@ public class SubmitRegisterOverflow {
 
     public static void main(String[] args) throws Exception {
 
-        log.info("A blockchain register overflow ....");
+        log.info("A blockchain register overflow is....");
 
         log.info("Register overflow transactions (both in mainnet and test network) "
                 + "can be compiled also with ED25519 BUT they will never be "
