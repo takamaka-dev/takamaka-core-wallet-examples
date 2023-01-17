@@ -15,5 +15,5 @@ The following transactions are allowed on the takamaka blockchain:
 - [DEREGISTER MAIN](src/main/java/io/takamaka/takamaka/core/wallet/examples/SubmitDeRegisterMain.java)
 - [DEREGISTER OVERFLOW](src/main/java/io/takamaka/takamaka/core/wallet/examples/SubmitDeRegisterOverflow.java)
 - [ASSIGN OVERFLOW](src/main/java/io/takamaka/takamaka/core/wallet/examples/SubmitAssignOverflow.java)
-- unassign_overflow
+- [UNASSIGN OVERFLOW](src/main/java/io/takamaka/takamaka/core/wallet/examples/SubmitUnassignOverflow.java)
 - blob (image, text, rich text, hash)
