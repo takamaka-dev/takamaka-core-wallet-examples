@@ -16,4 +16,5 @@ The following transactions are allowed on the takamaka blockchain:
 - [DEREGISTER OVERFLOW](src/main/java/io/takamaka/takamaka/core/wallet/examples/SubmitDeRegisterOverflow.java)
 - [ASSIGN OVERFLOW](src/main/java/io/takamaka/takamaka/core/wallet/examples/SubmitAssignOverflow.java)
 - unassign_overflow
-- blob (image, text, rich text, hash)
+- [BLOB](src/main/java/io/takamaka/takamaka/core/wallet/examples/SubmitBlob.java)(image, text, rich text, hash)
+>A "blob" transaction in a blockchain is a type of transaction that stores binary data, such as a document or image, on the blockchain. This data is typically stored as a "hash," which is a unique digital fingerprint of the data that can be used to verify its authenticity. Blob transactions are often used to store important documents, such as contracts, on a blockchain for secure and tamper-proof storage.
