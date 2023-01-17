@@ -8,6 +8,7 @@ import io.takamaka.wallet.utils.TkmTextUtils;
 import java.io.BufferedReader;
 import java.io.CharArrayWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
@@ -21,6 +22,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.StringJoiner;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.AutoDetectParser;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.Parser;
+import org.apache.tika.sax.BodyContentHandler;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -28,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ProjectHelper {
-    
+
     public static final String doPost(String passedUrl, String key, String param) throws MalformedURLException, ProtocolException, IOException {
         String r = null;
         URL url = new URL(passedUrl);
@@ -68,7 +77,7 @@ public class ProjectHelper {
 
         return r;
     }
-    
+
     public static String doPost(String uri, Map<String, String> parameters) throws MalformedURLException, IOException {
 
         URL url = new URL(uri);
@@ -91,17 +100,16 @@ public class ProjectHelper {
         http.setFixedLengthStreamingMode(length);
         http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
         http.connect();
-        try (OutputStream os = http.getOutputStream()) {
+        try ( OutputStream os = http.getOutputStream()) {
             os.write(out);
         } catch (Exception e) {
             log.error("Error sending data", e);
         }
-        
+
         Reader in = new BufferedReader(new InputStreamReader(http.getInputStream(), "UTF-8"));
-        
-        
+
         CharArrayWriter caw = new CharArrayWriter(100000);
-        
+
         //String ret = "";
         for (int c; (c = in.read()) >= 0;) {
             caw.append((char) c);
@@ -109,7 +117,17 @@ public class ProjectHelper {
         return caw.toString();
 
     }
-    
-    
-    
+
+    public static Metadata extractMetadatatUsingParser(InputStream stream)
+            throws IOException, SAXException, TikaException {
+
+        Parser parser = new AutoDetectParser();
+        ContentHandler handler = new BodyContentHandler();
+        Metadata metadata = new Metadata();
+        ParseContext context = new ParseContext();
+
+        parser.parse(stream, handler, metadata, context);
+        return metadata;
+    }
+
 }

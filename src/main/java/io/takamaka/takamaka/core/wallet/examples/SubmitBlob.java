@@ -4,6 +4,8 @@
  */
 package io.takamaka.takamaka.core.wallet.examples;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.takamaka.takamaka.core.wallet.examples.support.ProjectHelper;
 import io.takamaka.wallet.InstanceWalletKeyStoreBCED25519;
 import io.takamaka.wallet.InstanceWalletKeystoreInterface;
@@ -17,9 +19,21 @@ import io.takamaka.wallet.utils.TkmTK;
 import io.takamaka.wallet.utils.TkmTextUtils;
 import io.takamaka.wallet.utils.TkmWallet;
 import io.takamaka.wallet.utils.TransactionFeeCalculator;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.tika.metadata.Metadata;
 
 /**
  *
@@ -34,7 +48,7 @@ public class SubmitBlob {
     public static final String DESTINATION_WALLET_PASSWORD = "my_example_wallet_destination_password";
 
     public static void main(String[] args) throws Exception {
-        
+
         log.info("A \"blob\" transaction in a blockchain is a type of "
                 + "transaction that stores binary data, such as a document or "
                 + "image, on the blockchain. This data is typically stored as "
@@ -68,12 +82,87 @@ public class SubmitBlob {
 
         log.info("BuilderITB is a class that allows you to create the stub "
                 + "for sending any transaction.");
-                
-        InternalTransactionBean blobITB = BuilderITB.blob(
-                publicKeySource, 
-                "UTF8 message, free annotation",
-                transactionInclusionTime);
 
+//        try ( FileInputStream fis = new FileInputStream()) {
+//            int content;
+//            // reads a byte at a time, if it reached end of the file, returns -1
+//            while ((content = fis.read()) != -1) {
+//                System.out.println((char) content);
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        File selectedFile = new File("resources/sample-image.jpg");
+        FileInputStream fileIn = new FileInputStream(selectedFile);
+
+        Metadata extractMetadatatUsingParser = ProjectHelper.extractMetadatatUsingParser(fileIn);
+
+        String[] names = extractMetadatatUsingParser.names();
+
+        Map<String, String> mappedMetaData = new HashMap<>();
+        Map<String, String> mappedExtraMetadata = new HashMap<>();
+
+        for (String name : names) {
+            mappedMetaData.put(name, extractMetadatatUsingParser.get(name));
+        }
+
+        ObjectMapper jacksonMapper = TkmTextUtils.getJacksonMapper();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        JsonGenerator gen = jacksonMapper.createGenerator(baos);
+        gen.writeStartObject();
+
+        String[] tags = {"tag1", "tag2", "tag3"};
+
+        /*
+            Another method could be the following
+            String[] tags = "tag1,tag2,tag3".split(",");
+         */
+        mappedMetaData.entrySet().forEach((single) -> {
+            if (single.getKey().equals("Content-Type")
+                    || single.getKey().equals("X-Parsed-By")
+                    || single.getKey().equals("mime")
+                    || single.getKey().equals("resourceName")
+                    || single.getKey().equals("type")) {
+                try {
+                    gen.writeStringField(single.getKey(), single.getValue());
+                } catch (IOException ex) {
+                    Logger.getLogger(SubmitBlob.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
+                }
+            } else {
+                mappedExtraMetadata.put(single.getKey(), single.getValue());
+            }
+        });
+
+        gen.writeObjectField("extraMetadata", mappedExtraMetadata);
+
+        gen.writeFieldName("tags");
+        gen.writeStartArray();
+        for (String tag : tags) {
+            String trimmedTag = StringUtils.trimToNull(tag);
+            if (!TkmTextUtils.isNullOrBlank(trimmedTag)) {
+                gen.writeObject(trimmedTag);
+            }
+        }
+        gen.writeEndArray();
+
+        byte[] byteFile = FileUtils.readFileToByteArray(selectedFile);
+        String base64file = TkmSignUtils.fromByteArrayToB64URL(byteFile);
+        gen.writeStringField("data", base64file);
+
+        gen.writeEndObject();
+        gen.flush();
+
+        String generatedMap = baos.toString(StandardCharsets.UTF_8);
+
+        gen.close();
+        baos.close();
+
+        //gen.writeStringField("data", base64file);
+        InternalTransactionBean blobITB = BuilderITB.blob(
+                publicKeySource,
+                generatedMap,
+                transactionInclusionTime);
 
         log.info("This forms the body of the transaction, now you need to "
                 + "use a wallet to create the cryptographic envelope and sign "
@@ -190,10 +279,10 @@ public class SubmitBlob {
                 + "the inclusion the transaction will be discarded.");
         log.info("transaction submit to test endpoint");
         String payTxSubmitResult = ProjectHelper.doPost("https://dev.takamaka.io/api/V2/testapi/transaction", // TEST endpoint
-                "tx", 
+                "tx",
                 payHexBody);
         log.info("endpoint submit result");
         log.info(payTxSubmitResult);
-        
+
     }
 }
