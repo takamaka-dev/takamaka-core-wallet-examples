@@ -120,8 +120,6 @@ public class SubmitBlob {
         mappedMetaData.entrySet().forEach((single) -> {
             if (single.getKey().equals("Content-Type")
                     || single.getKey().equals("X-Parsed-By")
-                    || single.getKey().equals("mime")
-                    || single.getKey().equals("resourceName")
                     || single.getKey().equals("type")) {
                 try {
                     gen.writeStringField(single.getKey(), single.getValue());
@@ -133,9 +131,9 @@ public class SubmitBlob {
                 mappedExtraMetadata.put(single.getKey(), single.getValue());
             }
         });
-
+        gen.writeStringField("resourceName", selectedFile.getName());
         gen.writeObjectField("extraMetadata", mappedExtraMetadata);
-
+        gen.writeStringField("mime", mappedMetaData.get("Content-Type"));
         gen.writeFieldName("tags");
         gen.writeStartArray();
         for (String tag : tags) {
@@ -172,7 +170,7 @@ public class SubmitBlob {
                 + "public key used in the from field matches the key used to "
                 + "sign the tranasation.");
 
-        TransactionBean myPayObject
+        TransactionBean myBlobObject
                 = TkmWallet.createGenericTransaction(
                         blobITB,
                         iwkEDSource, // source wallet 
@@ -181,26 +179,26 @@ public class SubmitBlob {
 
         log.info("transaction serialization");
 
-        String payTransactionJson = TkmTextUtils.toJson(myPayObject);
+        String blobTransactionJson = TkmTextUtils.toJson(myBlobObject);
 
         log.info("the serialized transaction");
-        log.info(payTransactionJson);
+        log.info(blobTransactionJson);
 
         log.info("How to perform a syntactic check of the newly created "
                 + "transaction.");
 
-        TransactionBox payTbox = TkmWallet.verifyTransactionIntegrity(payTransactionJson);
-        log.info("the transaction is valid?: " + payTbox.isValid());
+        TransactionBox blobTbox = TkmWallet.verifyTransactionIntegrity(blobTransactionJson);
+        log.info("the transaction is valid?: " + blobTbox.isValid());
 
-        FeeBean payFeeBean = TransactionFeeCalculator.getFeeBean(payTbox);
+        FeeBean blobFeeBean = TransactionFeeCalculator.getFeeBean(blobTbox);
 
-        log.info("PAY is a basic transaction");
-        log.info("single inclusion transaction hash: " + payFeeBean.getSith()
-                + "\nCPU cost (nanoTK):\t" + payFeeBean.getCpu()
-                + "\nMEMORY cost (nanoTK):\t" + payFeeBean.getMemory()
-                + "\nDISK cost (nanoTK):\t" + payFeeBean.getDisk()
+        log.info("BLOB is a basic transaction");
+        log.info("single inclusion transaction hash: " + blobFeeBean.getSith()
+                + "\nCPU cost (nanoTK):\t" + blobFeeBean.getCpu()
+                + "\nMEMORY cost (nanoTK):\t" + blobFeeBean.getMemory()
+                + "\nDISK cost (nanoTK):\t" + blobFeeBean.getDisk()
         );
-        log.info("readable way in TK: " + TransactionFeeCalculator.getCostInTK(payFeeBean).toPlainString());
+        log.info("readable way in TK: " + TransactionFeeCalculator.getCostInTK(blobFeeBean).toPlainString());
 
         log.info(" --- same code TransactionPayED25519 --- End ---");
 
@@ -231,10 +229,10 @@ public class SubmitBlob {
                 + "with mobile devices that poorly digest plain http outside the"
                 + " development environment.");
 
-        String payHexBody = TkmSignUtils.fromStringToHexString(payTransactionJson);
+        String blobHexBody = TkmSignUtils.fromStringToHexString(blobTransactionJson);
 
         log.info("the wrapped json, can be decode using hex to text tool");
-        log.info(payHexBody);
+        log.info(blobHexBody);
 
         log.info("You can send a transaction to a verification endpoint to "
                 + "get a syntactic check on it.");
@@ -255,13 +253,13 @@ public class SubmitBlob {
                 + "    \"cpu\": 0\n"
                 + "}");
 
-        String payTxVerifyResult = ProjectHelper.doPost(
+        String blobTxVerifyResult = ProjectHelper.doPost(
                 "https://dev.takamaka.io/api/V2/fastapi/verifytransaction", // main network verify endpoint (for verify main or test network is the same) 
                 "tx", //form var
-                payHexBody); //hex transaction
+                blobHexBody); //hex transaction
 
         log.info("endpoint verification result");
-        log.info(payTxVerifyResult);
+        log.info(blobTxVerifyResult);
 
         log.info("curlified version of the transaction submit");
         log.info("curl --location --request GET 'https://dev.takamaka.io/api/V2/testapi/transaction' \\\n"
@@ -278,11 +276,11 @@ public class SubmitBlob {
                 + "performed, for example if the sending account cannot pay for "
                 + "the inclusion the transaction will be discarded.");
         log.info("transaction submit to test endpoint");
-        String payTxSubmitResult = ProjectHelper.doPost("https://dev.takamaka.io/api/V2/testapi/transaction", // TEST endpoint
+        String blobTxSubmitResult = ProjectHelper.doPost("https://dev.takamaka.io/api/V2/testapi/transaction", // TEST endpoint
                 "tx",
-                payHexBody);
+                blobHexBody);
         log.info("endpoint submit result");
-        log.info(payTxSubmitResult);
+        log.info(blobTxSubmitResult);
 
     }
 }
