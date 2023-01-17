@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author Giovanni Antino giovanni.antino@takamaka.io
  */
 @Slf4j
-public class SubmitAssignOverflow {
+public class SubmitUnassignOverflow {
 
     public static final String SOURCE_WALLET_NAME = "my_example_wallet_source";
     public static final String DESTINATION_WALLET_NAME = "my_example_wallet_destination";
@@ -35,18 +35,15 @@ public class SubmitAssignOverflow {
 
     public static void main(String[] args) throws Exception {
         
-        log.info("Transaction used to assign an \"overflow\" address to a"
-                + " \"main\". For this transaction to be successful both addresses "
-                + "must already be registered as such via their respective "
-                + "transactions, \"REGISTER_OVERFLOW\" and \"REGISTER_MAIN\". "
-                + "The address of \"main\" must be in the \"from\" field and the "
-                + "address of \"overflow\" in the \"to\" field of the transaction,"
-                + " which are also mandatory. Only the address of \"main\" can "
-                + "assign itself an \"overflow\". A \"main\" address can have "
-                + "multiple \"overflow\" addresses assigned, but an \"overflow\""
-                + " address can be assigned to only one \"main\" address. ");
+        log.info("Transaction used to remove the assignment between a "
+                + "\"main\" and an \"overflow\" address. The addresses remain "
+                + "registered with their respective qualifications "
+                + "and can be reassigned. Unlike the assignment transaction, "
+                + "\"ASSIGN_OVERFLOW,\" which must be done by the \"main\" "
+                + "address, this can be done by either "
+                + "the \"main\" or the \"overflow”.");
         
-        log.info("Assign overflow transactions (both in mainnet and test network) "
+        log.info("Unassign overflow transactions (both in mainnet and test network) "
                 + "can be compiled also with ED25519 but they will never be "
                 + "included. In order to properly include the transaction is"
                 + " mandatory to use BCQTESLAPSSC1Round2 "
@@ -55,7 +52,7 @@ public class SubmitAssignOverflow {
         log.info("In the following example, ED2559 will be used for "
                 + "teaching purposes.");
         
-        log.info(" --- same code TransactionAssignOverflowED25519 --- Begin ---");
+        log.info(" --- same code TransactionUnassignOverflowED25519 --- Begin ---");
 
         log.info("wallet creation or import");
         final InstanceWalletKeystoreInterface iwkEDSource = 
@@ -93,10 +90,10 @@ public class SubmitAssignOverflow {
         log.info("BuilderITB is a class that allows you to create the stub "
                 + "for sending any transaction.");
                 
-        InternalTransactionBean assignOverflowITB = BuilderITB.assignOverflow(
+        InternalTransactionBean unassignOverflowITB = BuilderITB.unassignOverflow(
                 publicKeySource, 
                 publicKeySource,
-                "Test assign ", 
+                "Test unassign ", 
                 transactionInclusionTime);
         log.info("This forms the body of the transaction, now you need to "
                 + "use a wallet to create the cryptographic envelope and sign "
@@ -106,41 +103,41 @@ public class SubmitAssignOverflow {
                 + "public key used in the from field matches the key used to "
                 + "sign the tranasation.");
 
-        TransactionBean myAssignOverflowObject
+        TransactionBean myUnassignOverflowObject
                 = TkmWallet.createGenericTransaction(
-                        assignOverflowITB,
+                        unassignOverflowITB,
                         iwkEDSource, // source wallet 
                         0 // same wallet and KEY INDEX of publicKeySource
                 );
 
         log.info("transaction serialization");
 
-        String assignOverflowTransactionJson = TkmTextUtils.toJson(
-                myAssignOverflowObject);
+        String unAssignOverflowTransactionJson = TkmTextUtils.toJson(
+                myUnassignOverflowObject);
 
         log.info("the serialized transaction");
-        log.info(assignOverflowTransactionJson);
+        log.info(unAssignOverflowTransactionJson);
 
         log.info("How to perform a syntactic check of the newly created "
                 + "transaction.");
 
-        TransactionBox assignOverflowTbox = TkmWallet.verifyTransactionIntegrity(
-                assignOverflowTransactionJson);
-        log.info("the transaction is valid?: " + assignOverflowTbox.isValid());
+        TransactionBox unAssignOverflowTbox = TkmWallet.verifyTransactionIntegrity(
+                unAssignOverflowTransactionJson);
+        log.info("the transaction is valid?: " + unAssignOverflowTbox.isValid());
 
-        FeeBean assignOverflowFeeBean = TransactionFeeCalculator.getFeeBean(
-                assignOverflowTbox);
+        FeeBean unAssignOverflowFeeBean = TransactionFeeCalculator.getFeeBean(
+                unAssignOverflowTbox);
 
-        log.info("ASSIGN OVERFLOW is a basic transaction");
-        log.info("single inclusion transaction hash: " + assignOverflowFeeBean.getSith()
-                + "\nCPU cost (nanoTK):\t" + assignOverflowFeeBean.getCpu()
-                + "\nMEMORY cost (nanoTK):\t" + assignOverflowFeeBean.getMemory()
-                + "\nDISK cost (nanoTK):\t" + assignOverflowFeeBean.getDisk()
+        log.info("UNASSIGN OVERFLOW is a basic transaction");
+        log.info("single inclusion transaction hash: " + unAssignOverflowFeeBean.getSith()
+                + "\nCPU cost (nanoTK):\t" + unAssignOverflowFeeBean.getCpu()
+                + "\nMEMORY cost (nanoTK):\t" + unAssignOverflowFeeBean.getMemory()
+                + "\nDISK cost (nanoTK):\t" + unAssignOverflowFeeBean.getDisk()
         );
         log.info("readable way in TK: " + TransactionFeeCalculator.getCostInTK(
-                assignOverflowFeeBean).toPlainString());
+                unAssignOverflowFeeBean).toPlainString());
 
-        log.info(" --- same code TransactionAssignOverflowED25519 --- End ---");
+        log.info(" --- same code TransactionUnassignOverflowED25519 --- End ---");
 
         log.info("To minimize the risk of transaction modification during "
                 + "transport, Takamaka endpoints accept transactions only if "
@@ -169,11 +166,11 @@ public class SubmitAssignOverflow {
                 + "with mobile devices that poorly digest plain http outside the"
                 + " development environment.");
 
-        String assignOverflowHexBody = TkmSignUtils.fromStringToHexString(
-                assignOverflowTransactionJson);
+        String unAssignOverflowHexBody = TkmSignUtils.fromStringToHexString(
+                unAssignOverflowTransactionJson);
 
         log.info("the wrapped json, can be decode using hex to text tool");
-        log.info(assignOverflowHexBody);
+        log.info(unAssignOverflowHexBody);
 
         log.info("You can send a transaction to a verification endpoint to "
                 + "get a syntactic check on it.");
@@ -194,13 +191,13 @@ public class SubmitAssignOverflow {
                 + "    \"cpu\": 0\n"
                 + "}");
 
-        String assignOverflowTxVerifyResult = ProjectHelper.doPost(
+        String unAssignOverflowTxVerifyResult = ProjectHelper.doPost(
                 "https://dev.takamaka.io/api/V2/fastapi/verifytransaction", // main network verify endpoint (for verify main or test network is the same) 
                 "tx", //form var
-                assignOverflowHexBody); //hex transaction
+                unAssignOverflowHexBody); //hex transaction
 
         log.info("endpoint verification result");
-        log.info(assignOverflowTxVerifyResult);
+        log.info(unAssignOverflowTxVerifyResult);
 
         log.info("curlified version of the transaction submit");
         log.info("curl --location --request GET 'https://dev.takamaka.io/api/V2/testapi/transaction' \\\n"
@@ -214,15 +211,15 @@ public class SubmitAssignOverflow {
                 + "successfully received by the server, the syntax is correct, "
                 + "and it has been added to the queue for inclusion in a block.\n"
                 + "At this point the SEMANTIC checks have not yet been "
-                + "performed, for example if the sending account cannot assign overflow for "
+                + "performed, for example if the sending account cannot unassign overflow for "
                 + "the inclusion the transaction will be discarded.");
         log.info("transaction submit to test endpoint");
-        String assignOverflowTxSubmitResult = ProjectHelper.doPost(
+        String unAssignOverflowTxSubmitResult = ProjectHelper.doPost(
                 "https://dev.takamaka.io/api/V2/testapi/transaction", // TEST endpoint
                 "tx", 
-                assignOverflowHexBody);
+                unAssignOverflowHexBody);
         log.info("endpoint submit result");
-        log.info(assignOverflowTxSubmitResult);
+        log.info(unAssignOverflowTxSubmitResult);
         
     }
 }

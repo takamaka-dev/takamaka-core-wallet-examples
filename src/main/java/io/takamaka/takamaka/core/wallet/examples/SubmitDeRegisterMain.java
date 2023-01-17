@@ -32,9 +32,15 @@ public class SubmitDeRegisterMain {
 
     public static void main(String[] args) throws Exception {
 
-        log.info("A blockchain de register main ...");
+        log.info("Transaction used to deregister a \"main\" address so as"
+                + " to remove it from the mining-enabled address pool."
+                + " Deregistering a \"main\" also automatically removes all "
+                + "assignments of any \"overflow\" addresses. These can be "
+                + "re-registered to a new “main” address. The address of \"main\""
+                + " must be of type qTesla and present in the \"from\" field, "
+                + "the only mandatory field in this type of transaction. ");
 
-        log.info("Register main transactions (both in mainnet and test network) "
+        log.info("Deregister main transactions (both in mainnet and test network) "
                 + "can be compiled also with ED25519 but they will never be "
                 + "included. In order to properly include the transaction is"
                 + " mandatory to use BCQTESLAPSSC1Round2 "

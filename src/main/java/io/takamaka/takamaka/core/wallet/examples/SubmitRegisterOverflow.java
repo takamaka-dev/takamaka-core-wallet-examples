@@ -32,7 +32,15 @@ public class SubmitRegisterOverflow {
 
     public static void main(String[] args) throws Exception {
 
-        log.info("A blockchain register overflow ....");
+        log.info("Transaction used to register a qTesla address as an"
+                + " \"overflow\" address. Unlike the \"main\" address, which can "
+                + "represent a pool of nodes and have several overflows attached"
+                + " to it, the latter represent the physical servers that manage"
+                + " and allow the blockchain to function. Stakes also made on any"
+                + " overflows attached to a main are consolidated on it for"
+                + " calculation and division of slots among nodes. The “overflow”"
+                + " address must be of type qTesla and present in the \"from\""
+                + " field, the only mandatory field in this type of transaction.");
 
         log.info("Register overflow transactions (both in mainnet and test network) "
                 + "can be compiled also with ED25519 BUT they will never be "
