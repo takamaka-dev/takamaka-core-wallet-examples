@@ -17,7 +17,6 @@ import io.takamaka.wallet.utils.TkmTK;
 import io.takamaka.wallet.utils.TkmTextUtils;
 import io.takamaka.wallet.utils.TkmWallet;
 import io.takamaka.wallet.utils.TransactionFeeCalculator;
-import java.math.BigInteger;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 

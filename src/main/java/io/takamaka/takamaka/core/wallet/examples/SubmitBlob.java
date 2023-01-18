@@ -4,7 +4,6 @@
  */
 package io.takamaka.takamaka.core.wallet.examples;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.takamaka.extra.beans.TkmMetadata;
 import io.takamaka.extra.files.MetadataUtils;
@@ -21,22 +20,11 @@ import io.takamaka.wallet.utils.TkmTK;
 import io.takamaka.wallet.utils.TkmTextUtils;
 import io.takamaka.wallet.utils.TkmWallet;
 import io.takamaka.wallet.utils.TransactionFeeCalculator;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.sis.internal.metadata.MetadataUtilities;
-import org.apache.tika.metadata.Metadata;
 
 /**
  *

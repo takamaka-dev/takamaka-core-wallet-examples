@@ -4,7 +4,6 @@
  */
 package io.takamaka.takamaka.core.wallet.examples;
 
-import io.takamaka.wallet.InstanceWalletKeyStoreBCED25519;
 import io.takamaka.wallet.InstanceWalletKeyStoreBCQTESLAPSSC1Round2;
 import io.takamaka.wallet.InstanceWalletKeystoreInterface;
 import io.takamaka.wallet.beans.FeeBean;

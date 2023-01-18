@@ -186,10 +186,11 @@ public class SubmitStake {
                 + "    \"memory\": 0,\n"
                 + "    \"cpu\": 0\n"
                 + "}");
-
-        String stakeTxVerifyResult = ProjectHelper.doPost(
-                 /* main network verify endpoint (for verify main or 
-                test network is the same)*/ 
+        
+        log.info("main network verify endpoint (for verify main or \n" +
+"                test network is the same)");
+        
+        String stakeTxVerifyResult = ProjectHelper.doPost( 
                 "https://dev.takamaka.io/api/V2/fastapi/verifytransaction",
                 "tx", //form var
                 stakeHexBody
