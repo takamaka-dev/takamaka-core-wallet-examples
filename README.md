@@ -1,6 +1,8 @@
 # Takamaka Core Wallet Examples
 This project aims to explain the use of the Takamaka Core Wallet library.
 
+We're currently setting up an automated process to request testnet coins, TKG and TKR. In the meantime anyone who's interested may receive some by sending an email at info@takamaka.io and providing a valid takamaka address.
+
 BCQTESLAPSSC1Round2 will be used instead of BCQTESLAPSSC1Round1 since the latter is still an experimental suite
 
 The following transactions are allowed on the takamaka blockchain:
