@@ -74,15 +74,6 @@ public class SubmitBlob {
         log.info("BuilderITB is a class that allows you to create the stub "
                 + "for sending any transaction.");
 
-//        try ( FileInputStream fis = new FileInputStream()) {
-//            int content;
-//            // reads a byte at a time, if it reached end of the file, returns -1
-//            while ((content = fis.read()) != -1) {
-//                System.out.println((char) content);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         File selectedFile = new File("resources/sample-image.jpg");
         FileInputStream fileIn = new FileInputStream(selectedFile);
         String[] tags = {"tag1", "tag2", "tag3"};
@@ -91,69 +82,11 @@ public class SubmitBlob {
         log.info(collectMetadata.toString());
         
         collectMetadata.setResourceName(selectedFile.getName());
-
-        //Metadata extractMetadatatUsingParser = ProjectHelper.extractMetadatatUsingParser(fileIn);
-        //String[] names = extractMetadatatUsingParser.names();
-//        Map<String, String> mappedMetaData = new HashMap<>();
-//        Map<String, String> mappedExtraMetadata = new HashMap<>();
-//
-//        for (String name : names) {
-//            mappedMetaData.put(name, extractMetadatatUsingParser.get(name));
-//        }
-//
-//        ObjectMapper jacksonMapper = TkmTextUtils.getJacksonMapper();
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        JsonGenerator gen = jacksonMapper.createGenerator(baos);
-//        gen.writeStartObject();
-//
-//        /*
-//            Another method could be the following
-//            String[] tags = "tag1,tag2,tag3".split(",");
-//         */
-//        gen.writeFieldName("tags");
-//        gen.writeStartArray();
-//        for (String tag : tags) {
-//            String trimmedTag = StringUtils.trimToNull(tag);
-//            if (!TkmTextUtils.isNullOrBlank(trimmedTag)) {
-//                gen.writeObject(trimmedTag);
-//            }
-//        }
-//        gen.writeEndArray();
-//        mappedMetaData.entrySet().forEach((single) -> {
-//            if (single.getKey().equals("Content-Type")
-//                    || single.getKey().equals("X-Parsed-By")
-//                    || single.getKey().equals("type")) {
-//                try {
-//                    gen.writeStringField(single.getKey(), single.getValue());
-//                } catch (IOException ex) {
-//                    Logger.getLogger(SubmitBlob.class.getName()).log(Level.SEVERE, null, ex);
-//                    ex.printStackTrace();
-//                }
-//            } else {
-//                mappedExtraMetadata.put(single.getKey(), single.getValue());
-//            }
-//        });
-//        gen.writeStringField("resourceName", selectedFile.getName());
-//        gen.writeStringField("mime", mappedMetaData.get("Content-Type"));
-//        gen.writeObjectField("extraMetadata", mappedExtraMetadata);
-//
-//        //to optimize indexing leave data as last element
-//        byte[] byteFile = FileUtils.readFileToByteArray(selectedFile);
-//        String base64file = TkmSignUtils.fromByteArrayToB64URL(byteFile);
-//        gen.writeStringField("data", base64file);
-//
-//        gen.writeEndObject();
-//        gen.flush();
-//
-//        String generatedMap = baos.toString(StandardCharsets.UTF_8);
-//
-//        gen.close();
-//        baos.close();
+        
         collectMetadata.setData(MetadataUtils.fromFileToB64String(selectedFile));
         
         ObjectMapper jacksonMapper = TkmTextUtils.getJacksonMapper();
         String writeValueAsString = jacksonMapper.writeValueAsString(collectMetadata);
-        //gen.writeStringField("data", base64file);
         log.info(writeValueAsString);
         InternalTransactionBean blobITB = BuilderITB.blob(
                 publicKeySource,
