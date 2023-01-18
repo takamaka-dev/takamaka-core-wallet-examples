@@ -25,21 +25,21 @@ import lombok.extern.slf4j.Slf4j;
 public class CreateNewWalletED25519 {
 
     public static void main(String[] args) throws Exception {
-        //generic interface for all takamaka wallet
+        log.info("generic interface for all takamaka wallet");
         InstanceWalletKeystoreInterface iwkED;
-        //ed wallet creation with recovery based on 25 words from dictionary.
+        log.info("ed wallet creation with recovery based on 25 words from dictionary.");
         String walletName = "my_ed_wallet_example";
         String recoveredWalletName = "my_recovered_ed_wallet_example";
         String walletPassword = "my_super_safe_password";
         String recoveredWalletPassword = "my_super_safe_password_for_recovered_wallet";
         iwkED = new InstanceWalletKeyStoreBCED25519(walletName, walletPassword);
-        //If a wallet with the same name exists the instance will try to open it 
-        //using the specified password.
-        //From the single seed of iwk, 2^31 key pairs can be obtained.
-        //Key generation is deterministic and seed-based.
-        //To an external observer, a public key pair generated from the same
-        //wallet is indistinguishable from a key pair generated from two 
-        //different wallets.
+        log.info("If a wallet with the same name exists the instance will "
+                + "try to open it using the specified password. From the single "
+                + "seed of iwk, 2^31 key pairs can be obtained. Key generation"
+                + " is deterministic and seed-based. To an external observer, a"
+                + " public key pair generated from the same wallet is"
+                + " indistinguishable from a key pair generated from two "
+                + "different wallets.");
         String publicKeyAtIndexZero = iwkED.getPublicKeyAtIndexURL64(0);
         String publicKeyAtIndexOne = iwkED.getPublicKeyAtIndexURL64(1);
         log.info("Publick key zero " + publicKeyAtIndexZero);
@@ -48,8 +48,8 @@ public class CreateNewWalletED25519 {
                 FileHelper.getDefaultWalletDirectoryPath().toString(), 
                 walletName + DefaultInitParameters.WALLET_EXTENSION);
         KeyBean walletKeyBean = WalletHelper.readKeyFile(walletPath, walletPassword);
-        //Within a KeyBean is stored all the information, in plain text, 
-        //to be able to reconstruct a wallet.
+        log.info("Within a KeyBean is stored all the information, in plain"
+                + " text, to be able to reconstruct a wallet.");
         walletKeyBean.getAlgorithm();
 
         String internalName = recoveredWalletName + FixedParameters.USER_WALLETS_FILE_EXTENSION;

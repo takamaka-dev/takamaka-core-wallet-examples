@@ -52,7 +52,11 @@ public class SubmitStakeUndo {
         log.info(" --- same code TransactionPayED25519 --- Begin ---");
 
         log.info("wallet creation or import");
-        final InstanceWalletKeystoreInterface iwkEDSource = new InstanceWalletKeyStoreBCED25519(SOURCE_WALLET_NAME, SOURCE_WALLET_PASSWORD);
+        final InstanceWalletKeystoreInterface iwkEDSource = new 
+        InstanceWalletKeyStoreBCED25519(
+                SOURCE_WALLET_NAME, 
+                SOURCE_WALLET_PASSWORD
+        );
 
         final String publicKeySource = iwkEDSource.getPublicKeyAtIndexURL64(0);
         log.info("source public key " + publicKeySource);
@@ -84,7 +88,8 @@ public class SubmitStakeUndo {
 
         log.info("transaction serialization");
 
-        String stakeUndoTransactionJson = TkmTextUtils.toJson(myStakeUndoObject);
+        String stakeUndoTransactionJson = TkmTextUtils.toJson(
+                myStakeUndoObject);
 
         log.info("the serialized transaction");
         log.info(stakeUndoTransactionJson);
@@ -96,7 +101,8 @@ public class SubmitStakeUndo {
                 .verifyTransactionIntegrity(stakeUndoTransactionJson);
         log.info("the transaction is valid?: " + stakeUndoTbox.isValid());
 
-        FeeBean stakeUndoFeeBean = TransactionFeeCalculator.getFeeBean(stakeUndoTbox);
+        FeeBean stakeUndoFeeBean = TransactionFeeCalculator.getFeeBean(
+                stakeUndoTbox);
 
         log.info("STAKE UNDO is a basic transaction");
         log.info("single inclusion transaction hash: " + stakeUndoFeeBean.getSith()
@@ -184,12 +190,14 @@ public class SubmitStakeUndo {
                 + "performed, for example if the sending account cannot pay for "
                 + "the inclusion the transaction will be discarded.");
         log.info("transaction submit to test endpoint");
-        String stakeUndoTxSubmitResult = ProjectHelper.doPost("https://dev.takamaka.io/api/V2/testapi/transaction", // TEST endpoint
+        String stakeUndoTxSubmitResult = ProjectHelper.doPost(
+                "https://dev.takamaka.io/api/V2/testapi/transaction", // TEST endpoint
                 "tx", 
                 stakeUndoHexBody);
         log.info("endpoint submit result");
         log.info(stakeUndoTxSubmitResult);
-        String payTxSubmitResult = ProjectHelper.doPost("https://dev.takamaka.io/api/V2/testapi/transaction", // TEST endpoint
+        String payTxSubmitResult = ProjectHelper.doPost(
+                "https://dev.takamaka.io/api/V2/testapi/transaction", // TEST endpoint
                 "tx", 
                 stakeUndoHexBody);
         log.info("endpoint submit result");

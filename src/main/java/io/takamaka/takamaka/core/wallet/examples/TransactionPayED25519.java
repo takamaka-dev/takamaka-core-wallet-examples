@@ -34,12 +34,20 @@ public class TransactionPayED25519 {
     public static void main(String[] args) throws Exception {
 
         log.info("wallet creation or import");
-        final InstanceWalletKeystoreInterface iwkEDSource = new InstanceWalletKeyStoreBCED25519(SOURCE_WALLET_NAME, SOURCE_WALLET_PASSWORD);
-        final InstanceWalletKeystoreInterface iwkEDDestination = new InstanceWalletKeyStoreBCED25519(DESTINATION_WALLET_NAME, DESTINATION_WALLET_PASSWORD);
+        final InstanceWalletKeystoreInterface iwkEDSource = 
+                new InstanceWalletKeyStoreBCED25519(
+                        SOURCE_WALLET_NAME, 
+                        SOURCE_WALLET_PASSWORD);
+        final InstanceWalletKeystoreInterface iwkEDDestination =
+                new InstanceWalletKeyStoreBCED25519(
+                        DESTINATION_WALLET_NAME, 
+                        DESTINATION_WALLET_PASSWORD);
 
-        final String publicKeySource = iwkEDSource.getPublicKeyAtIndexURL64(0);
+        final String publicKeySource = iwkEDSource
+                .getPublicKeyAtIndexURL64(0);
         log.info("source public key " + publicKeySource);
-        final String publicKeyDestination = iwkEDDestination.getPublicKeyAtIndexURL64(0);
+        final String publicKeyDestination = iwkEDDestination
+                .getPublicKeyAtIndexURL64(0);
         log.info("destination public key " + publicKeyDestination);
 
         log.info("In the takamaka blockchain each transaction has a time limit "
@@ -106,7 +114,8 @@ public class TransactionPayED25519 {
         log.info("How to perform a syntactic check of the newly created "
                 + "transaction.");
 
-        TransactionBox payTbox = TkmWallet.verifyTransactionIntegrity(payTransactionJson);
+        TransactionBox payTbox = TkmWallet.verifyTransactionIntegrity(
+                payTransactionJson);
         log.info("the transaction is valid?: " + payTbox.isValid());
 
         log.info("If the transaction is valid, the inclusion cost can be "
@@ -122,7 +131,8 @@ public class TransactionPayED25519 {
                 + "\nMEMORY cost (nanoTK):\t" + payFeeBean.getMemory()
                 + "\nDISK cost (nanoTK):\t" + payFeeBean.getDisk()
         );
-        log.info("readable way in TK: " + TransactionFeeCalculator.getCostInTK(payFeeBean).toPlainString());
+        log.info("readable way in TK: " + TransactionFeeCalculator.getCostInTK(
+                payFeeBean).toPlainString());
 
     }
 }
